@@ -1,3 +1,4 @@
+from core.agent import ask_ollama
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,5 +46,17 @@ def bind_document(payload: BindRequest):
         cover_path=str(cover_path) if cover_path else None
     )
     return result
+class AIRequest(BaseModel):
+    prompt: str
+    context: str = "You are an expert creative writing assistant. Improve the following text for a book chapter."
+    model: str = "qwen2.5-coder:3b"
+@app.post("/api/ai/suggest")
+def get_ai_suggestion(payload: AIRequest):
+    suggestion = ask_ollama(
+        prompt=payload.prompt,
+        system_context=payload.context,
+        model=payload.model
+    )
+    return {"status": "success", "suggestion": suggestion}
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

@@ -14,7 +14,8 @@
     "@tiptap/starter-kit": "^3.32.2",
     "axios": "^1.21.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "react-draggable": "^4.7.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -1,5 +1,6 @@
 import EditorCanvas from './components/EditorCanvas';
 import './App.css';
+
 function App() {
   return (
     <div className="app-layout">
@@ -8,13 +9,14 @@ function App() {
         <div className="nav-links">
           <button className="active-nav">Canvas / Editor</button>
           <button>Mastering Pipeline</button>
-          <button>Ollama Assistant</button>
         </div>
       </aside>
+
       <main className="main-workspace">
         <EditorCanvas />
       </main>
     </div>
   );
 }
+
 export default App;
