@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# Node
+node_modules/
+dist/
+.env
+
+# Project Specific
+backend/bin/
+backend/assets/temp_scans/
+backend/assets/master_outputs/
+*.log
+.DS_Store
