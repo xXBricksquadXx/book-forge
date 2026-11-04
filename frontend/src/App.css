@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --bg-dark: #121212;
   --bg-sidebar: #1e1e1e;
@@ -44,6 +48,15 @@ body {
   color: white;
   border-color: #555;
 }
+.nav-links button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #2a2a2a, #1a3b35, #2a2a2a);
+  background-size: 200% auto;
+  border-color: #00ffd5;
+  color: #00ffd5;
+  box-shadow: 0 0 12px rgba(0, 255, 213, 0.4), inset 0 0 5px rgba(0, 255, 213, 0.1);
+  animation: shine 3s linear infinite;
+}
+
 .main-workspace {
   flex: 1;
   display: flex;
@@ -151,7 +164,9 @@ body {
   transition: background 0.2s;
 }
 .agent-actions button:hover:not(:disabled) {
-  background-color: #444;
+  border-color: #00ffd5;
+  box-shadow: 0 0 10px rgba(0, 255, 213, 0.3), inset 0 0 5px rgba(0, 255, 213, 0.1);
+  color: white;
 }
 .agent-actions button:disabled {
   opacity: 0.5;
@@ -203,6 +218,8 @@ body {
   background-clip: text;
   animation: shine 3s linear infinite;
   margin: 0;
+  padding-bottom: 4px;
+  line-height: 1.2;
 }
 @keyframes shine {
   to { background-position: 200% center; }
@@ -236,4 +253,72 @@ body {
   color: #666;
   font-size: 1.2rem;
   user-select: none;
+}
+.panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.minimize-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid #444;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.minimize-btn:hover {
+  background: #333;
+  color: white;
+}
+
+.agent-panel {
+  transition: height 0.3s ease; /* Smooth collapse */
+}
+
+.agent-panel.minimized {
+  height: auto; /* Shrinks the panel to just the header */
+  padding-bottom: 5px;
+}
+
+.agent-config {
+  display: flex;
+  flex-direction: column; /* Stacks the dropdowns vertically for full width */
+  gap: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.agent-select {
+  flex: 1;
+  min-width: 0; 
+  background-color: #222;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.85rem; 
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.agent-select:hover, .agent-select:focus {
+  border-color: #00ffd5;
+  box-shadow: 0 0 10px rgba(0, 255, 213, 0.3), inset 0 0 5px rgba(0, 255, 213, 0.1);
+  color: white;
+}
+
+.agent-select option {
+  background-color: #222;
+  color: #fff;
 }

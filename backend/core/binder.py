@@ -1,10 +1,17 @@
 import pymupdf as fitz
 import os
+import tempfile
 from pathlib import Path
 def compile_book(title: str, chapters: dict, output_path: str, cover_path: str = None) -> dict:
-    """Binds HTML chapters into a master PDF using DocumentWriter to generate Devices."""
-    temp_path = str(Path(output_path).with_name("temp_chapters.pdf"))
+    """Binds HTML chapters into a master PDF using an OS-level tempfile."""
+    
+    # 1. Generate a true system-level temporary file that Windows manages
+    temp_fd, temp_path = tempfile.mkstemp(suffix=".pdf")
+    os.close(temp_fd) # Close the raw OS descriptor so PyMuPDF has full access
+    
     writer = fitz.DocumentWriter(temp_path)
+    
+    # CSS to mirror your React Canvas
     pdf_css = """
     body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 2.0; color: #111111; }
     p { text-indent: 0.5in; margin-top: 0; margin-bottom: 0; }
