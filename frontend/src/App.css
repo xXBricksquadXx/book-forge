@@ -396,3 +396,78 @@ body {
   height: 100%;
   color: #888;
 }
+.pipeline-dashboard {
+  width: 100%;
+  max-width: 1000px;
+  background: var(--bg-sidebar);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.pipeline-header {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 20px;
+}
+.pipeline-header p {
+  color: #aaa;
+  font-size: 1.1rem;
+}
+.pipeline-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: #111;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  margin-bottom: 30px;
+}
+.theme-selector label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-weight: bold;
+}
+.theme-selector .agent-select {
+  width: 400px;
+  padding: 10px;
+}
+.chapter-assembly-list h3 {
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+.sortable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.assembly-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #222;
+  padding: 15px 20px;
+  border: 1px solid #444;
+  border-radius: 6px;
+}
+.drag-handle-icon {
+  color: #666;
+  cursor: grab;
+  font-size: 1.2rem;
+  user-select: none;
+}
+.assembly-index {
+  color: #888;
+  font-weight: bold;
+  min-width: 30px;
+}
+.assembly-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.file-tree.dimmed {
+  opacity: 0.5;
+  pointer-events: none;
+}

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EditorCanvas from './components/EditorCanvas';
+import MasteringPipeline from './components/MasteringPipeline';
 import './App.css';
 function App() {
   const [chapters, setChapters] = useState([]);
   const [activeChapter, setActiveChapter] = useState(null);
+  const [activeView, setActiveView] = useState('editor');
   const fetchChapters = async () => {
     try {
       const res = await axios.get('http://127.0.0.1:8000/api/chapters/list');
@@ -56,14 +58,28 @@ function App() {
       <aside className="sidebar">
         <h2>Book Forge</h2>
         <div className="nav-links">
-          <button className="active-nav">Canvas / Editor</button>
-          <button>Mastering Pipeline</button>
+          <button
+            className={activeView === 'editor' ? 'active-nav' : ''}
+            onClick={() => setActiveView('editor')}
+          >
+            Canvas / Editor
+          </button>
+          <button
+            className={activeView === 'pipeline' ? 'active-nav' : ''}
+            onClick={() => setActiveView('pipeline')}
+          >
+            Mastering Pipeline
+          </button>
         </div>
-        {/* Phase 6: Scrivener File Tree */}
-        <div className="file-tree">
+        {/* Phase 6: Scrivener File Tree (Only relevant when in Editor view) */}
+        <div className={`file-tree ${activeView !== 'editor' ? 'dimmed' : ''}`}>
           <div className="file-tree-header">
             <h3>Manuscript</h3>
-            <button className="add-chapter-btn" onClick={handleNewChapter}>
+            <button
+              className="add-chapter-btn"
+              onClick={handleNewChapter}
+              disabled={activeView !== 'editor'}
+            >
               + New
             </button>
           </div>
@@ -74,7 +90,10 @@ function App() {
                 className={`chapter-item ${activeChapter?.title === chap.title ? 'active' : ''}`}
               >
                 <span
-                  onClick={() => setActiveChapter(chap)}
+                  onClick={() => {
+                    setActiveChapter(chap);
+                    setActiveView('editor');
+                  }}
                   className="chapter-title"
                 >
                   {chap.title}
@@ -92,7 +111,9 @@ function App() {
       </aside>
       <main className="main-workspace">
         {}
-        {activeChapter ? (
+        {activeView === 'pipeline' ? (
+          <MasteringPipeline chapters={chapters} />
+        ) : activeChapter ? (
           <EditorCanvas
             activeChapter={activeChapter}
             refreshSidebar={fetchChapters}
