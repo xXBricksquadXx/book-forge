@@ -1,7 +1,6 @@
 *, *::before, *::after {
   box-sizing: border-box;
 }
-
 :root {
   --bg-dark: #121212;
   --bg-sidebar: #1e1e1e;
@@ -56,7 +55,6 @@ body {
   box-shadow: 0 0 12px rgba(0, 255, 213, 0.4), inset 0 0 5px rgba(0, 255, 213, 0.1);
   animation: shine 3s linear infinite;
 }
-
 .main-workspace {
   flex: 1;
   display: flex;
@@ -259,7 +257,6 @@ body {
   align-items: center;
   gap: 10px;
 }
-
 .minimize-btn {
   background: transparent;
   color: var(--accent);
@@ -275,29 +272,24 @@ body {
   line-height: 1;
   padding: 0;
 }
-
 .minimize-btn:hover {
   background: #333;
   color: white;
 }
-
 .agent-panel {
-  transition: height 0.3s ease; /* Smooth collapse */
+  transition: height 0.3s ease; 
 }
-
 .agent-panel.minimized {
-  height: auto; /* Shrinks the panel to just the header */
+  height: auto; 
   padding-bottom: 5px;
 }
-
 .agent-config {
   display: flex;
-  flex-direction: column; /* Stacks the dropdowns vertically for full width */
+  flex-direction: column; 
   gap: 10px;
   margin-bottom: 15px;
   width: 100%;
 }
-
 .agent-select {
   flex: 1;
   min-width: 0; 
@@ -311,14 +303,96 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
 .agent-select:hover, .agent-select:focus {
   border-color: #00ffd5;
   box-shadow: 0 0 10px rgba(0, 255, 213, 0.3), inset 0 0 5px rgba(0, 255, 213, 0.1);
   color: white;
 }
-
 .agent-select option {
   background-color: #222;
   color: #fff;
+}
+.file-tree {
+  margin-top: 30px;
+  border-top: 1px solid #333;
+  padding-top: 20px;
+}
+.file-tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.file-tree-header h3 {
+  margin: 0;
+  color: #888;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.add-chapter-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.add-chapter-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.chapter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: #222;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chapter-item:hover {
+  border-color: #555;
+  background: #2a2a2a;
+}
+.chapter-item.active {
+  border-color: var(--accent);
+  background: rgba(74, 144, 226, 0.1);
+}
+.chapter-title {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+.chapter-item.active .chapter-title {
+  color: var(--accent);
+  font-weight: bold;
+}
+.delete-chapter-btn {
+  background: transparent;
+  color: #666;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+  line-height: 1;
+}
+.delete-chapter-btn:hover {
+  color: #ff4444;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
 }

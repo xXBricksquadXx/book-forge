@@ -12,21 +12,19 @@
 
 ## Purpose & Intent
 
-Book Forge is a local, privacy-first writing and document mastery platform. Originally designed for authoring and structuring 200–300 page book manuscripts, its strict architectural formatting and AI integration make it equally powerful for corporate drafting, legal documentation, and technical reports.
+Book Forge is a local, privacy-first writing and document mastery platform. Originally designed for authoring and structuring 200–300 page book manuscripts using a Scrivener-style architecture, its strict architectural formatting and AI integration make it equally powerful for corporate drafting, legal documentation, and technical reports.
 
 It combines a React-based word processor with a Python PyMuPDF backend, allowing users to draft in a clean, distraction-free interface while a local LLM agent acts as a collaborative editor.
 
-When the draft is ready, the backend binds the HTML canvas into a professionally formatted, double-spaced Master PDF.
+When the draft is ready, the backend pulls the ordered chapters from a local database and binds the HTML into a professionally formatted Master PDF.
 
 ## Core Features
 
-- **The Canvas:** A headless Tiptap React editor enforcing traditional print formatting, including double-spacing, 0.5-inch paragraph indents, and centered headers.
-
-- **Draggable AI Agent:** A free-floating UI panel connected directly to a local Ollama instance (`qwen2.5-coder:3b`), allowing for precise, coordinate-based text rewrites, dialogue punch-ups, and grammar polishing without losing focus.
-
-- **The Binder Engine:** A FastAPI Python backend utilizing `fitz.DocumentWriter` to render HTML/CSS directly into physical PDF files with automatically generated Tables of Contents.
-
-- **100% Local Privacy:** No cloud dependencies for AI processing or document rendering.
+- **The Canvas:** A headless Tiptap React editor with an auto-save buffer to prevent data loss.
+- **Scrivener-Style File Tree:** A dynamic sidebar backed by MongoDB to organize manuscripts chapter by chapter, preventing DOM performance degradation on massive documents.
+- **Draggable AI Agent:** A free-floating, collapsible UI panel dynamically connected to your local Ollama models (e.g., `qwen2.5-coder:3b`). Execute precise, coordinate-based text rewrites, dialogue punch-ups, and grammar polishing without losing focus. Includes dynamic "Personas" for creative, corporate, or legal tones.
+- **The Binder Engine:** A FastAPI Python backend utilizing `fitz.DocumentWriter` to safely render HTML/CSS directly into physical PDF files with automatically generated Tables of Contents.
+- **100% Local Privacy:** No cloud dependencies for AI processing, data storage, or document rendering.
 
 ---
 
@@ -51,19 +49,15 @@ cd book-forge
 
 ### 2. Start the Binder Engine (Backend)
 
-Open your first terminal and initialize the Python backend.
+Open your first terminal and initialize the Python backend. Ensure your `.env` file contains `MONGO_URI="mongodb://localhost:27017"`
 
 **PowerShell:**
 
 ```powershell
 cd backend
-
 python -m venv .venv
-
 .\.venv\Scripts\activate
-
-pip install fastapi uvicorn pymupdf pydantic requests
-
+pip install -r requirements.txt
 python main.py
 ```
 
@@ -93,13 +87,19 @@ The Authoring Canvas will start at:
 
 ## Usage
 
-1. Open the Authoring Canvas in your browser.
-2. Draft your document or paste in existing raw text.
-3. Highlight any text you wish to improve.
-4. Drag the Ollama Agent next to the selected text and choose an editing action.
-5. Click **Publish Master PDF** in the toolbar to automatically compile and bind your document.
+- Open the Authoring Canvas in your browser.
 
-Your finished PDF will be saved in:
+- Use the sidebar to create a + New chapter.
+
+- Draft your document or paste in existing raw text. (Your work is auto-saved to a local browser buffer as you type).
+
+- Highlight any text you wish to improve, configure the Forge Agent's persona, and choose an editing action.
+
+- Click Save to Database to permanently write the chapter to MongoDB.
+
+- Click Bind Current Chapter to render a local PDF of your active screen.
+
+- Your finished PDF will be saved in:
 
 ```text
 backend/assets/master_outputs/
@@ -107,4 +107,16 @@ backend/assets/master_outputs/
 
 ---
 
-**Book Forge — Write locally. Edit intelligently. Publish professionally.**
+## Roadmap & TL;DR
+
+[x]: Vite/React shell, headless Tiptap canvas, and portable Tesseract OCR binary staging.
+
+[x]: Free-floating draggable Ollama agent with dynamic model mapping and coordinate-based text replacement.
+
+[x]: MongoDB database integration, Scrivener-style sidebar file tree, and CRUD functionality.
+
+[ ](Mastering Pipeline): Build the Assembly Room dashboard to drag-and-drop chapter ordering, select global CSS themes (Book, Corporate, Legal), and compile the final multi-chapter PDF.
+
+## [ ](The OCR Bridge): Connect the frontend to the staged Tesseract binary, allowing users to upload physical page scans and automatically convert them into editable MongoDB chapters.
+
+### _Book Forge — Write locally. Edit intelligently. Publish professionally._

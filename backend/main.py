@@ -123,5 +123,13 @@ async def get_chapter(chapter_title: str, project_id: str = "default_project"):
     chapter["_id"] = str(chapter["_id"])
     return {"status": "success", "chapter": chapter}
 
+@app.delete("/api/chapters/{chapter_title}")
+async def delete_chapter(chapter_title: str, project_id: str = "default_project"):
+    """Deletes a chapter from the database."""
+    result = await chapters_col.delete_one({"title": chapter_title, "project_id": project_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Chapter not found")
+    return {"status": "success", "message": "Chapter deleted"}
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

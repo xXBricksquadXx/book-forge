@@ -5,3 +5,7 @@ pdfplumber
 pytesseract
 requests
 python-multipart
+motor
+dnspython
+python-dotenv
+pydantic
