@@ -3,6 +3,7 @@ uvicorn
 PyMuPDF
 pdfplumber
 pytesseract
+Pillow
 requests
 python-multipart
 motor

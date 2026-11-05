@@ -57,11 +57,13 @@ Each chapter is stored as a distinct JSON document containing the following sche
 
 ## Prerequisites
 
-Before installing Book Forge, ensure the following dependencies are installed:
+Before installing Book Forge, ensure the following dependencies are active on your local machine:
 
-- **Node.js:** v18 or newer
-- **Python:** 3.10 or newer
+- **Node.js:** v18 or newer.
+- **Python:** 3.10 or newer.
+- **MongoDB Community Server:** Installed and running locally on the default port `27017`.
 - **Ollama:** Installed and running locally with the `qwen2.5-coder:3b` model pulled.
+- **Tesseract OCR (Portable):** Required for the _Import Scan_ feature. A Windows portable binary must be staged in the backend (details in Getting Started).
 
 ---
 
@@ -70,13 +72,21 @@ Before installing Book Forge, ensure the following dependencies are installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YourUsername/book-forge.git
+git clone [https://github.com/YourUsername/book-forge.git](https://github.com/YourUsername/book-forge.git)
 cd book-forge
 ```
 
+### 2. Stage the OCR Binary (Tesseract)
+
+> For the Import Scan image-to-text pipeline to function, Book Forge requires a portable Tesseract executable.
+
+- Download a portable Windows Tesseract build.
+
+- Extract it into the repository at this exact path:`backend/bin/tesseract/tesseract.exe`(_Note: If you prefer a system-level install, simply update the `TESSERACT_PATH` variable inside `backend/core/scanner.py` to match your local environment_).
+
 ### 2. Start the Binder Engine (Backend)
 
-Open your first terminal and initialize the Python backend. Ensure your `.env` file contains `MONGO_URI="mongodb://localhost:27017"`
+Open your first terminal and initialize the Python backend. Ensure your local MongoDB instance is actively running and that you have created a .`env` file in the `backend/` directory containing: `MONGO_URI="mongodb://localhost:27017`"
 
 **PowerShell:**
 
