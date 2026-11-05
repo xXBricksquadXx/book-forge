@@ -72,19 +72,20 @@ Before installing Book Forge, ensure the following dependencies are active on yo
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/YourUsername/book-forge.git](https://github.com/YourUsername/book-forge.git)
-cd book-forge
+gh repo clone xXBricksquadXx/book-forge
 ```
 
 ### 2. Stage the OCR Binary (Tesseract)
 
-> For the Import Scan image-to-text pipeline to function, Book Forge requires a portable Tesseract executable.
+For the **Import Scan** image-to-text pipeline to function, Book Forge requires a local Tesseract executable.
 
-- Download a portable Windows Tesseract build.
+1. Download a Windows Tesseract build (e.g., from [SourceForge](https://sourceforge.net/projects/tesseract-ocr.mirror/)).
+2. Run the installer and route the extraction manually via your Windows file explorer so the executable sits at this exact path:
+   `backend/bin/tesseract/tesseract.exe`
 
-- Extract it into the repository at this exact path:`backend/bin/tesseract/tesseract.exe`(_Note: If you prefer a system-level install, simply update the `TESSERACT_PATH` variable inside `backend/core/scanner.py` to match your local environment_).
+_(Note: If you prefer a system-level install, simply update the `TESSERACT_PATH` variable inside `backend/core/scanner.py` to match your local environment)._
 
-### 2. Start the Binder Engine (Backend)
+### 3. Start the Binder Engine (Backend)
 
 Open your first terminal and initialize the Python backend. Ensure your local MongoDB instance is actively running and that you have created a .`env` file in the `backend/` directory containing: `MONGO_URI="mongodb://localhost:27017`"
 
