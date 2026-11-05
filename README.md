@@ -115,8 +115,8 @@ backend/assets/master_outputs/
 
 [x]: MongoDB database integration, Scrivener-style sidebar file tree, and CRUD functionality.
 
-[ ](Mastering Pipeline): Build the Assembly Room dashboard to drag-and-drop chapter ordering, select global CSS themes (Book, Corporate, Legal), and compile the final multi-chapter PDF.
+[x] Phase 7 (Mastering Pipeline): Built the Assembly Room dashboard to drag-and-drop chapter ordering, select global CSS themes (Book, Corporate, Legal), and compile the final multi-chapter PDF.
 
-## [ ](The OCR Bridge): Connect the frontend to the staged Tesseract binary, allowing users to upload physical page scans and automatically convert them into editable MongoDB chapters.
+[x] Phase 8 (The OCR Bridge): Connected the frontend to the staged Tesseract/pdfplumber binaries, allowing users to upload physical page scans, intelligently parse titles, and automatically convert them into tiled MongoDB chapters.
 
 ### _Book Forge — Write locally. Edit intelligently. Publish professionally._
