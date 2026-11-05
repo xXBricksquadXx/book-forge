@@ -110,9 +110,12 @@ function App() {
         </div>
       </aside>
       <main className="main-workspace">
-        {}
+        {/* Conditional Rendering: Show Dashboard OR Canvas */}
         {activeView === 'pipeline' ? (
-          <MasteringPipeline chapters={chapters} />
+          <MasteringPipeline
+            chapters={chapters}
+            refreshChapters={fetchChapters}
+          />
         ) : activeChapter ? (
           <EditorCanvas
             activeChapter={activeChapter}

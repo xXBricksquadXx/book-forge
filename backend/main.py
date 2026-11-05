@@ -1,11 +1,12 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pathlib import Path
 import uvicorn
 import datetime
+
 from core.agent import ask_ollama
-from core.scanner import verify_engine
+from core.scanner import verify_engine, extract_text_from_file
 from core.binder import compile_book
 from core.audio_prep import clean_for_elevenlabs
 from core.database import chapters_col
@@ -33,12 +34,32 @@ class AIRequest(BaseModel):
     prompt: str
     context: str = "You are an expert creative writing assistant. Improve the following text for a book chapter."
     model: str = "qwen2.5-coder:3b"
+class ReorderRequest(BaseModel):
+    chapter_orders: dict  # Example: {"Chapter 2": 1, "Chapter 1": 2}
+    project_id: str = "default_project"    
 @app.get("/")
 def read_root():
     return {"engine": "Binder API Online", "status": "ready"}
 @app.get("/api/system/ocr-check")
 def check_ocr_status():
     return verify_engine()
+@app.post("/api/system/upload-scan")
+async def upload_scan(file: UploadFile = File(...)):
+    """Receives a scanned PDF or image, extracts text, and returns HTML for the Canvas."""
+    try:
+        file_bytes = await file.read()
+        extracted_text = extract_text_from_file(file_bytes, file.filename)
+        
+        if not extracted_text:
+            raise HTTPException(status_code=400, detail="No text could be extracted from this file.")
+            
+        # Format the raw text into clean HTML paragraphs for Tiptap
+        paragraphs = [f"<p>{p.strip()}</p>" for p in extracted_text.split('\n') if p.strip()]
+        html_content = f"<h2>Scanned: {file.filename}</h2>\n" + "\n".join(paragraphs)
+        
+        return {"status": "success", "content": html_content, "filename": file.filename}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OCR Engine Error: {str(e)}")
 @app.post("/api/audio/normalize")
 def normalize_text(payload: AudioPrepRequest):
     cleaned_text = clean_for_elevenlabs(payload.raw_text)
@@ -101,5 +122,14 @@ async def delete_chapter(chapter_title: str, project_id: str = "default_project"
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Chapter not found")
     return {"status": "success", "message": "Chapter deleted"}
+@app.post("/api/chapters/reorder")
+async def reorder_chapters(payload: ReorderRequest):
+    """Bulk updates the order_index for dragged chapters in the Assembly Room."""
+    for title, index in payload.chapter_orders.items():
+        await chapters_col.update_one(
+            {"title": title, "project_id": payload.project_id},
+            {"$set": {"order_index": index}}
+        )
+    return {"status": "success", "message": "Chapter order updated"}
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
