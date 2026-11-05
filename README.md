@@ -2,7 +2,7 @@
 
 <div align="center">
   <!-- Replace banner.png with your professional header image in the public folder -->
-  <img src="./frontend/public/banner.png" alt="Book Forge Banner" width="100%">
+  <img src="./frontend/public/banner.svg" alt="Book Forge Banner" width="100%">
 
 **A Dual-Engine AI Publishing & Authoring Environment**
 
