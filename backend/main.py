@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from pathlib import Path
 import uvicorn
 import datetime
-
 from core.agent import ask_ollama
 from core.scanner import verify_engine, extract_text_from_file
 from core.binder import compile_book
@@ -35,7 +34,7 @@ class AIRequest(BaseModel):
     context: str = "You are an expert creative writing assistant. Improve the following text for a book chapter."
     model: str = "qwen2.5-coder:3b"
 class ReorderRequest(BaseModel):
-    chapter_orders: dict  # Example: {"Chapter 2": 1, "Chapter 1": 2}
+    chapter_orders: dict  
     project_id: str = "default_project"    
 @app.get("/")
 def read_root():
@@ -45,19 +44,26 @@ def check_ocr_status():
     return verify_engine()
 @app.post("/api/system/upload-scan")
 async def upload_scan(file: UploadFile = File(...)):
-    """Receives a scanned PDF or image, extracts text, and returns HTML for the Canvas."""
+    """Receives a scan, extracts text by page, and intelligently names chapters."""
     try:
         file_bytes = await file.read()
-        extracted_text = extract_text_from_file(file_bytes, file.filename)
-        
-        if not extracted_text:
+        extracted_pages = extract_text_from_file(file_bytes, file.filename)
+        if not extracted_pages:
             raise HTTPException(status_code=400, detail="No text could be extracted from this file.")
-            
-        # Format the raw text into clean HTML paragraphs for Tiptap
-        paragraphs = [f"<p>{p.strip()}</p>" for p in extracted_text.split('\n') if p.strip()]
-        html_content = f"<h2>Scanned: {file.filename}</h2>\n" + "\n".join(paragraphs)
-        
-        return {"status": "success", "content": html_content, "filename": file.filename}
+        formatted_chapters = []
+        for index, page_text in enumerate(extracted_pages):
+            lines = [line.strip() for line in page_text.split('\n') if line.strip()]
+            first_line = lines[0] if lines else "Blank Page"
+            smart_title = first_line[:40] + "..." if len(first_line) > 40 else first_line
+            if len(extracted_pages) > 1:
+                smart_title += f" (Pg. {index + 1})"
+            paragraphs = [f"<p>{line}</p>" for line in lines]
+            html_content = f"<h2>{smart_title}</h2>\n" + "\n".join(paragraphs)
+            formatted_chapters.append({
+                "title": smart_title,
+                "content": html_content
+            })
+        return {"status": "success", "chapters": formatted_chapters}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OCR Engine Error: {str(e)}")
 @app.post("/api/audio/normalize")
